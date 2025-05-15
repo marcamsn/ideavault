@@ -6,9 +6,10 @@ import { Idea } from '@/types'
 interface IdeaCardProps {
   idea: Idea
   onSwipe: (direction: 'left' | 'right') => void
+  onEdit: (idea: Idea) => void
 }
 
-export default function IdeaCard({ idea, onSwipe }: IdeaCardProps) {
+export default function IdeaCard({ idea, onSwipe, onEdit }: IdeaCardProps) {
   const [isSwiping, setIsSwiping] = useState(false)
   const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null)
 
@@ -49,6 +50,7 @@ export default function IdeaCard({ idea, onSwipe }: IdeaCardProps) {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
+      onClick={() => onEdit(idea)}
     >
       {idea.image_url && (
         <img

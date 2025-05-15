@@ -11,6 +11,7 @@ import { useAuth } from '@/contexts/AuthContext'
 export default function Home() {
   const [ideas, setIdeas] = useState<Idea[]>([])
   const [showModal, setShowModal] = useState(false)
+  const [editingIdea, setEditingIdea] = useState<Idea | null>(null)
   const router = useRouter()
   const { user, isLoading, signOut } = useAuth()
   const supabase = createClientComponentClient()
@@ -56,6 +57,28 @@ export default function Home() {
     } catch (error) {
       console.error('Error updating idea:', error)
     }
+  }
+
+  async function handleDeleteIdea(ideaId: string) {
+    try {
+      const { error } = await supabase
+        .from('ideas')
+        .delete()
+        .eq('id', ideaId)
+
+      if (error) throw error
+      await fetchIdeas()
+      setShowModal(false)
+      setEditingIdea(null)
+    } catch (error) {
+      console.error('Error deleting idea:', error)
+      alert('Failed to delete idea. Please try again.')
+    }
+  }
+
+  function handleEditIdea(idea: Idea) {
+    setEditingIdea(idea)
+    setShowModal(true)
   }
 
   // Don't render anything while checking authentication status
@@ -126,6 +149,7 @@ export default function Home() {
             <button
               onClick={(e) => {
                 e.preventDefault();
+                setEditingIdea(null); // Asegurarse de que estamos añadiendo, no editando
                 setShowModal(true);
               }}
               className="bg-white/15 backdrop-blur-lg text-text-primary px-8 py-3 rounded-full shadow-card hover:shadow-card-hover hover:scale-102 transition-card focus:outline-none"
@@ -146,6 +170,7 @@ export default function Home() {
                   key={idea.id}
                   idea={idea}
                   onSwipe={(direction) => handleSwipe(idea, direction)}
+                  onEdit={handleEditIdea}
                 />
               ))}
             </div>
@@ -157,8 +182,13 @@ export default function Home() {
       {showModal && (
         <div className="fixed inset-0 z-50 bg-pastel-purple/30 backdrop-blur-md flex items-center justify-center p-screen-padding">
           <AddIdeaModal
-            onClose={() => setShowModal(false)}
+            idea={editingIdea}
+            onClose={() => {
+              setShowModal(false);
+              setEditingIdea(null);
+            }}
             onSuccess={fetchIdeas}
+            onDelete={handleDeleteIdea}
           />
         </div>
       )}
