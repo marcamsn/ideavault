@@ -7,7 +7,8 @@ CREATE TABLE ideas (
     mood TEXT NOT NULL CHECK (mood IN ('happy', 'playful', 'dreamy', 'wild')),
     favorite BOOLEAN DEFAULT false,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    user_id UUID REFERENCES auth.users(id)
 );
 
 -- Create trigger to update updated_at

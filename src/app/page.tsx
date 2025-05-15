@@ -33,6 +33,8 @@ export default function Home() {
       .from('ideas')
       .select('*')
       .order('created_at', { ascending: false })
+      // Filtro por user_id para asegurar que solo se obtienen las ideas del usuario actual
+      .eq('user_id', user?.id)
 
     if (error) {
       console.error('Error fetching ideas:', error)
@@ -65,6 +67,31 @@ export default function Home() {
   if (!user) {
     return null
   }
+  
+  // Mostrar ideas de ejemplo en la vista previa de Windsurf si no hay ideas reales
+  const isWindsurfPreview = typeof window !== 'undefined' && window.location.hostname === '127.0.0.1';
+  const displayIdeas = ideas.length > 0 ? ideas : isWindsurfPreview ? [
+    {
+      id: 'preview-1',
+      text: 'Esta es una idea de ejemplo para la vista previa de Windsurf',
+      tags: ['preview', 'ejemplo'],
+      mood: 'happy',
+      favorite: true,
+      image_url: null,
+      created_at: new Date().toISOString(),
+      user_id: user.id
+    },
+    {
+      id: 'preview-2',
+      text: 'Las ideas reales aparecerán cuando accedas desde un navegador normal',
+      tags: ['preview', 'información'],
+      mood: 'dreamy',
+      favorite: false,
+      image_url: null,
+      created_at: new Date().toISOString(),
+      user_id: user.id
+    }
+  ] : []
 
   return (
     <div className="relative">
@@ -92,13 +119,13 @@ export default function Home() {
             </button>
           </div>
 
-          {ideas.length === 0 ? (
+          {displayIdeas.length === 0 ? (
             <div className="text-center py-10">
               <p className="text-gray-500">No ideas yet. Add your first idea!</p>
             </div>
           ) : (
             <div className="space-y-4">
-              {ideas.map((idea) => (
+              {displayIdeas.map((idea) => (
                 <IdeaCard
                   key={idea.id}
                   idea={idea}
@@ -113,9 +140,7 @@ export default function Home() {
       {showModal && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
           <AddIdeaModal
-            onClose={() => {
-              setShowModal(false);
-            }}
+            onClose={() => setShowModal(false)}
             onSuccess={fetchIdeas}
           />
         </div>

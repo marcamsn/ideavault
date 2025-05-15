@@ -35,12 +35,19 @@ export default function AddIdeaModal({ onClose, onSuccess }: AddIdeaModalProps) 
     try {
       let imageUrl = null
       if (image) {
+        const fileName = `idea-${Date.now()}-${image.name}`
         const { data, error } = await supabase.storage
           .from('idea-images')
-          .upload(`idea-${Date.now()}-${image.name}`, image)
+          .upload(fileName, image)
 
         if (error) throw error
-        imageUrl = data.path
+        
+        // Generar la URL pública completa de la imagen
+        const { data: urlData } = supabase.storage
+          .from('idea-images')
+          .getPublicUrl(fileName)
+          
+        imageUrl = urlData.publicUrl
       }
 
       const { error } = await supabase.from('ideas').insert({
