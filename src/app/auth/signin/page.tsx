@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 export default function SignIn() {
   const [email, setEmail] = useState('')
@@ -10,6 +11,7 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
+  const supabase = createClientComponentClient()
 
   async function handleSignIn(e: React.FormEvent) {
     e.preventDefault()

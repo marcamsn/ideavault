@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react'
-import { supabase } from '@/lib/supabaseClient'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Idea } from '@/types'
 import { useAuth } from '@/contexts/AuthContext'
 
@@ -18,6 +18,7 @@ export default function AddIdeaModal({ onClose, onSuccess }: AddIdeaModalProps) 
   const [image, setImage] = useState<File | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const { user } = useAuth()
+  const supabase = createClientComponentClient()
 
   const MOODS = ['happy', 'playful', 'dreamy', 'wild']
 

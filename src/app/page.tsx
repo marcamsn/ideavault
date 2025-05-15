@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabaseClient'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Idea } from '@/types'
 import IdeaCard from '@/components/IdeaCard'
 import AddIdeaModal from '@/components/AddIdeaModal'
@@ -13,6 +13,7 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false)
   const router = useRouter()
   const { user, isLoading, signOut } = useAuth()
+  const supabase = createClientComponentClient()
 
   // Redirect to sign in if user is not authenticated
   useEffect(() => {
