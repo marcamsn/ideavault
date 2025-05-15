@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { Idea } from '@/types'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface AddIdeaModalProps {
   onClose: () => void
@@ -16,12 +17,19 @@ export default function AddIdeaModal({ onClose, onSuccess }: AddIdeaModalProps) 
   const [favorite, setFavorite] = useState(false)
   const [image, setImage] = useState<File | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const { user } = useAuth()
 
   const MOODS = ['happy', 'playful', 'dreamy', 'wild']
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setIsLoading(true)
+
+    if (!user) {
+      alert('You must be logged in to add an idea')
+      setIsLoading(false)
+      return
+    }
 
     try {
       let imageUrl = null
@@ -39,7 +47,8 @@ export default function AddIdeaModal({ onClose, onSuccess }: AddIdeaModalProps) 
         tags,
         mood,
         favorite,
-        image_url: imageUrl
+        image_url: imageUrl,
+        user_id: user.id  // Add the user ID to the new idea
       })
 
       if (error) throw error
