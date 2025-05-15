@@ -164,14 +164,15 @@ export default function Home() {
               <p className="text-text-secondary">No ideas yet. Add your first idea!</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-card-gap">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 auto-rows-fr">
               {displayIdeas.map((idea) => (
-                <IdeaCard
-                  key={idea.id}
-                  idea={idea}
-                  onSwipe={(direction) => handleSwipe(idea, direction)}
-                  onEdit={handleEditIdea}
-                />
+                <div key={idea.id} className="h-full">
+                  <IdeaCard
+                    idea={idea}
+                    onSwipe={(direction) => handleSwipe(idea, direction)}
+                    onEdit={handleEditIdea}
+                  />
+                </div>
               ))}
             </div>
           )}
