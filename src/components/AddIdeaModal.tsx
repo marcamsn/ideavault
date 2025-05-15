@@ -71,81 +71,104 @@ export default function AddIdeaModal({ onClose, onSuccess }: AddIdeaModalProps) 
     }
   }
 
+  const moodEmojis = {
+    happy: '😊',
+    playful: '🎮',
+    dreamy: '💭',
+    wild: '🔥'
+  }
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 flex items-center justify-center p-screen-padding">
       <form
         onSubmit={handleSubmit}
-        className="bg-white rounded-lg p-6 max-w-md w-full"
+        className="bg-white/15 backdrop-blur-xl rounded-2xl shadow-card p-8 max-w-md w-full transition-card"
       >
-        <h2 className="text-2xl font-bold mb-4">Add New Idea</h2>
+        <h2 className="text-title font-heading text-text-primary mb-6 text-center">Add New Idea</h2>
         
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Idea Text</label>
+        <div className="mb-5">
+          <label className="block text-text-secondary font-body mb-2">Idea Text</label>
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            className="w-full p-2 border rounded"
+            className="w-full p-3 bg-white/30 backdrop-blur-md border-0 rounded-xl text-text-secondary focus:ring-2 focus:ring-pastel-purple/50 focus:outline-none"
             required
+            rows={4}
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Tags (comma separated)</label>
+        <div className="mb-5">
+          <label className="block text-text-secondary font-body mb-2">Tags (comma separated)</label>
           <input
             type="text"
             value={tags.join(',')}
             onChange={(e) => setTags(e.target.value.split(',').map(tag => tag.trim()))}
-            className="w-full p-2 border rounded"
+            className="w-full p-3 bg-white/30 backdrop-blur-md border-0 rounded-xl text-text-secondary focus:ring-2 focus:ring-pastel-purple/50 focus:outline-none"
+            placeholder="creativity, work, future"
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Mood</label>
-          <select
-            value={mood}
-            onChange={(e) => setMood(e.target.value)}
-            className="w-full p-2 border rounded"
-          >
+        <div className="mb-5">
+          <label className="block text-text-secondary font-body mb-2">Mood</label>
+          <div className="flex justify-between mb-2">
             {MOODS.map((m) => (
-              <option key={m} value={m}>
-                {m.charAt(0).toUpperCase() + m.slice(1)}
-              </option>
+              <button
+                key={m}
+                type="button"
+                onClick={() => setMood(m)}
+                className={`flex flex-col items-center p-3 rounded-xl transition-all ${mood === m ? 'bg-white/40 shadow-card scale-105' : 'bg-white/20 hover:bg-white/30'}`}
+              >
+                <span className="text-2xl mb-1">{moodEmojis[m as keyof typeof moodEmojis]}</span>
+                <span className="text-card-label text-text-secondary">
+                  {m.charAt(0).toUpperCase() + m.slice(1)}
+                </span>
+              </button>
             ))}
-          </select>
+          </div>
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Favorite</label>
-          <input
-            type="checkbox"
-            checked={favorite}
-            onChange={(e) => setFavorite(e.target.checked)}
-            className="w-4 h-4"
-          />
+        <div className="mb-5">
+          <label className="flex items-center text-text-secondary font-body cursor-pointer">
+            <input
+              type="checkbox"
+              checked={favorite}
+              onChange={(e) => setFavorite(e.target.checked)}
+              className="w-5 h-5 mr-3 accent-pastel-purple"
+            />
+            <span>Add to favorites</span>
+            {favorite && <span className="ml-2">⭐</span>}
+          </label>
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Image</label>
-          <input
-            type="file"
-            onChange={(e) => setImage(e.target.files?.[0] || null)}
-            accept="image/*"
-            className="w-full p-2 border rounded"
-          />
+        <div className="mb-6">
+          <label className="block text-text-secondary font-body mb-2">Image</label>
+          <div className="relative">
+            <input
+              type="file"
+              onChange={(e) => setImage(e.target.files?.[0] || null)}
+              accept="image/*"
+              className="w-full p-3 bg-white/30 backdrop-blur-md border-0 rounded-xl text-text-secondary focus:ring-2 focus:ring-pastel-purple/50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-white/40 file:text-text-secondary hover:file:bg-white/50"
+            />
+          </div>
+          {image && (
+            <p className="mt-2 text-card-label text-text-muted">
+              Selected: {image.name}
+            </p>
+          )}
         </div>
 
-        <div className="flex justify-end space-x-2">
+        <div className="flex justify-center space-x-4">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+            className="px-6 py-3 bg-white/30 backdrop-blur-md text-text-secondary rounded-full shadow-card hover:shadow-card-hover hover:scale-102 transition-card"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isLoading}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-6 py-3 bg-white/50 backdrop-blur-md text-text-primary rounded-full shadow-card hover:shadow-card-hover hover:scale-102 transition-card disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? 'Adding...' : 'Add Idea'}
           </button>

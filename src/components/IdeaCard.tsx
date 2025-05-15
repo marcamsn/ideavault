@@ -45,7 +45,7 @@ export default function IdeaCard({ idea, onSwipe }: IdeaCardProps) {
 
   return (
     <div
-      className="relative bg-white rounded-lg shadow-md p-4 cursor-pointer"
+      className="relative bg-white/15 backdrop-blur-xl rounded-2xl shadow-card p-card-padding cursor-pointer transition-card hover:scale-102 hover:shadow-card-hover"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -54,22 +54,22 @@ export default function IdeaCard({ idea, onSwipe }: IdeaCardProps) {
         <img
           src={idea.image_url}
           alt="Idea"
-          className="w-full h-48 object-cover rounded-lg mb-4"
+          className="w-full h-48 object-cover rounded-2xl mb-4"
         />
       )}
       
-      <div className="space-y-2">
+      <div className="space-y-3 text-center">
         <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold">{idea.text}</h3>
-          <span className="text-yellow-500 text-2xl">{moodEmoji}</span>
+          <h3 className="text-lg font-body text-text-secondary">{idea.text}</h3>
+          <span className="text-2xl">{moodEmoji}</span>
         </div>
         
         {idea.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 justify-center">
             {idea.tags.map((tag) => (
               <span
                 key={tag}
-                className="px-2 py-1 text-sm bg-blue-100 text-blue-800 rounded"
+                className="px-3 py-1 text-card-label bg-white/20 backdrop-blur-md text-text-secondary rounded-full"
               >
                 {tag}
               </span>
@@ -77,9 +77,14 @@ export default function IdeaCard({ idea, onSwipe }: IdeaCardProps) {
           </div>
         )}
         
-        <div className="flex justify-between text-sm text-gray-500">
-          <span>
-            {idea.favorite ? '⭐ Favorited' : '☆ Not favorited'}
+        <div className="flex justify-between text-card-label text-text-muted">
+          <span className="flex items-center">
+            {idea.favorite ? (
+              <span className="text-yellow-500 mr-1">⭐</span>
+            ) : (
+              <span className="text-pastel-gray-400 mr-1">☆</span>
+            )}
+            {idea.favorite ? 'Favorited' : 'Not favorited'}
           </span>
           <span>
             {new Date(idea.created_at).toLocaleDateString()}

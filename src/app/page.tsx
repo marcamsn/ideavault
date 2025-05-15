@@ -93,38 +93,54 @@ export default function Home() {
     }
   ] : []
 
+  // Obtener la hora del día para el saludo personalizado
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 18) return 'Good afternoon';
+    return 'Good evening';
+  };
+
   return (
     <div className="relative">
-      <main className="min-h-screen bg-gray-100 p-4">
+      <main className="min-h-screen bg-gradient-to-br from-pastel-pink via-pastel-blue to-pastel-purple p-screen-padding">
         <div className="max-w-4xl mx-auto">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-bold">IdeaVault</h1>
+          {/* Header con saludo personalizado */}
+          <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+            <div className="mb-4 md:mb-0">
+              <h1 className="text-title font-heading text-text-primary mb-1">IdeaVault</h1>
+              <p className="text-text-secondary">
+                {getGreeting()}, {user?.email?.split('@')[0] || 'User'}
+              </p>
+            </div>
             <button
               onClick={() => signOut()}
-              className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300"
+              className="bg-white/90 text-text-primary px-4 py-2 rounded-full shadow-card hover:shadow-card-hover transition-card"
             >
               Sign Out
             </button>
           </div>
           
-          <div className="flex justify-center mb-4">
+          {/* Botón de añadir idea con estilo pill */}
+          <div className="flex justify-center mb-8">
             <button
               onClick={(e) => {
                 e.preventDefault();
                 setShowModal(true);
               }}
-              className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              className="bg-white/15 backdrop-blur-lg text-text-primary px-8 py-3 rounded-full shadow-card hover:shadow-card-hover hover:scale-102 transition-card focus:outline-none"
             >
               Add New Idea
             </button>
           </div>
 
+          {/* Contenedor de ideas */}
           {displayIdeas.length === 0 ? (
-            <div className="text-center py-10">
-              <p className="text-gray-500">No ideas yet. Add your first idea!</p>
+            <div className="text-center py-10 bg-white/10 backdrop-blur-xl rounded-2xl shadow-card p-card-padding">
+              <p className="text-text-secondary">No ideas yet. Add your first idea!</p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-card-gap">
               {displayIdeas.map((idea) => (
                 <IdeaCard
                   key={idea.id}
@@ -137,8 +153,9 @@ export default function Home() {
         </div>
       </main>
 
+      {/* Modal con estilo frosted glass */}
       {showModal && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-pastel-purple/30 backdrop-blur-md flex items-center justify-center p-screen-padding">
           <AddIdeaModal
             onClose={() => setShowModal(false)}
             onSuccess={fetchIdeas}
