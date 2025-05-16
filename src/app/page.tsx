@@ -7,8 +7,11 @@ import { Idea } from '@/types'
 import IdeaCard from '@/components/IdeaCard'
 import AddIdeaModal from '@/components/AddIdeaModal'
 import { useAuth } from '@/contexts/AuthContext'
+import Sidebar from '@/components/Sidebar'
+import { SidebarMenuProvider, useSidebarMenu } from './SidebarMenuContext'
 
-export default function Home() {
+function HomeContent() {
+  const { section, setSection } = useSidebarMenu();
   const [ideas, setIdeas] = useState<Idea[]>([])
   const [showModal, setShowModal] = useState(false)
   const [editingIdea, setEditingIdea] = useState<Idea | null>(null)
@@ -125,76 +128,97 @@ export default function Home() {
   };
 
   return (
-    <div className="relative">
-      <main className="min-h-screen bg-gradient-to-br from-pastel-pink via-pastel-blue to-pastel-purple p-screen-padding">
-        <div className="max-w-4xl mx-auto">
-          {/* Header con logo y saludo personalizado */}
-          <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-            <div className="mb-4 md:mb-0">
-              <div className="flex items-center mb-1">
-                <img src="/logos/Logo.svg" alt="Logo principal" className="h-8 w-auto mr-2" />
-              </div>
-              <p className="text-text-secondary">
-                {getGreeting()}, {user?.email?.split('@')[0] || 'User'}
-              </p>
-            </div>
-            <button
-              onClick={() => signOut()}
-              className="bg-white/15 text-text-primary px-4 py-2 rounded-full shadow-card hover:shadow-card-hover transition-card"
-            >
-              Sign Out
-            </button>
-          </div>
-          
-          {/* Botón de añadir idea con estilo pill */}
-          <div className="flex justify-center mb-8">
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                setEditingIdea(null); // Asegurarse de que estamos añadiendo, no editando
-                setShowModal(true);
-              }}
-              className="bg-white/40 backdrop-blur-lg text-text-primary px-8 py-3 rounded-full shadow-card hover:shadow-card-hover hover:scale-102 transition-card focus:outline-none"
-            >
-              Add New Idea
-            </button>
-          </div>
-
-          {/* Contenedor de ideas */}
-          {displayIdeas.length === 0 ? (
-            <div className="text-center py-10 bg-white/10 backdrop-blur-xl rounded-2xl shadow-card p-card-padding">
-              <p className="text-text-secondary">No ideas yet. Add your first idea!</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 auto-rows-fr">
-              {displayIdeas.map((idea) => (
-                <div key={idea.id} className="h-full">
-                  <IdeaCard
-                    idea={idea}
-                    onSwipe={(direction) => handleSwipe(idea, direction)}
-                    onEdit={handleEditIdea}
-                  />
+    <div className="min-h-screen flex bg-gradient-to-br from-pastel-pink via-pastel-blue to-pastel-purple">
+      {/* Sidebar */}
+      <Sidebar selected={section} onSelect={setSection} />
+      {/* Main content wrapper, shifts right on desktop/tablet */}
+      <div className="flex-1 md:ml-16 transition-all duration-200">
+        <main className="min-h-screen p-screen-padding">
+          <div className="max-w-4xl mx-auto">
+            {/* Header con logo y saludo personalizado */}
+            <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+              <div className="mb-4 md:mb-0">
+                <div className="flex items-center mb-1">
+                  <img src="/logos/Logo.svg" alt="Logo principal" className="h-8 w-auto mr-2" />
                 </div>
-              ))}
+                <p className="text-text-secondary">
+                  {getGreeting()}, {user?.email?.split('@')[0] || 'User'}
+                </p>
+              </div>
+              <button
+                onClick={() => signOut()}
+                className="bg-white/15 text-text-primary px-4 py-2 rounded-full shadow-card hover:shadow-card-hover transition-card"
+              >
+                Sign Out
+              </button>
             </div>
-          )}
-        </div>
-      </main>
-
-      {/* Modal con estilo frosted glass */}
-      {showModal && (
-        <div className="fixed inset-0 z-50 bg-pastel-purple/30 backdrop-blur-md flex items-center justify-center p-screen-padding">
-          <AddIdeaModal
-            idea={editingIdea}
-            onClose={() => {
-              setShowModal(false);
-              setEditingIdea(null);
-            }}
-            onSuccess={fetchIdeas}
-            onDelete={handleDeleteIdea}
-          />
-        </div>
-      )}
+            {/* Sidebar section content */}
+            {section === "ideas" && (
+              <>
+                {/* Botón de añadir idea con estilo pill */}
+                <div className="flex justify-center mb-8">
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setEditingIdea(null); // Asegurarse de que estamos añadiendo, no editando
+                      setShowModal(true);
+                    }}
+                    className="bg-white/40 backdrop-blur-lg text-text-primary px-8 py-3 rounded-full shadow-card hover:shadow-card-hover hover:scale-102 transition-card focus:outline-none"
+                  >
+                    Add New Idea
+                  </button>
+                </div>
+                {/* Contenedor de ideas */}
+                {displayIdeas.length === 0 ? (
+                  <div className="text-center py-10 bg-white/10 backdrop-blur-xl rounded-2xl shadow-card p-card-padding">
+                    <p className="text-text-secondary">No ideas yet. Add your first idea!</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 auto-rows-fr">
+                    {displayIdeas.map((idea) => (
+                      <div key={idea.id} className="h-full">
+                        <IdeaCard
+                          idea={idea}
+                          onSwipe={(direction) => handleSwipe(idea, direction)}
+                          onEdit={handleEditIdea}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+            {section === "calendar" && (
+              <div className="flex flex-col items-center justify-center h-64 text-gray-400">
+                <span className="text-4xl mb-2">📅</span>
+                <p className="text-lg">Calendar coming soon...</p>
+              </div>
+            )}
+          </div>
+        </main>
+        {/* Modal con estilo frosted glass */}
+        {showModal && (
+          <div className="fixed inset-0 z-50 bg-pastel-purple/30 backdrop-blur-md flex items-center justify-center p-screen-padding">
+            <AddIdeaModal
+              idea={editingIdea}
+              onClose={() => {
+                setShowModal(false);
+                setEditingIdea(null);
+              }}
+              onSuccess={fetchIdeas}
+              onDelete={handleDeleteIdea}
+            />
+          </div>
+        )}
+      </div>
     </div>
   )
+}
+
+export default function Home() {
+  return (
+    <SidebarMenuProvider>
+      <HomeContent />
+    </SidebarMenuProvider>
+  );
 }
