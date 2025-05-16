@@ -119,39 +119,16 @@ function HomeContent() {
     }
   ] : []
 
-  // Obtener la hora del día para el saludo personalizado
-  const getGreeting = () => {
-    const hour = new Date().getHours();
-    if (hour < 12) return 'Good morning';
-    if (hour < 18) return 'Good afternoon';
-    return 'Good evening';
-  };
+  
 
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-pastel-pink via-pastel-blue to-pastel-purple">
       {/* Sidebar */}
-      <Sidebar selected={section} onSelect={setSection} />
+      <Sidebar selected={section} onSelect={setSection} onAddIdea={() => setShowModal(true)} />
       {/* Main content wrapper, shifts right on desktop/tablet */}
       <div className="flex-1 md:ml-16 transition-all duration-200">
         <main className="min-h-screen p-screen-padding">
           <div className="max-w-4xl mx-auto">
-            {/* Header con logo y saludo personalizado */}
-            <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-              <div className="mb-4 md:mb-0">
-                <div className="flex items-center mb-1">
-                  <img src="/logos/Logo.svg" alt="Logo principal" className="h-8 w-auto mr-2" />
-                </div>
-                <p className="text-text-secondary">
-                  {getGreeting()}, {user?.email?.split('@')[0] || 'User'}
-                </p>
-              </div>
-              <button
-                onClick={() => signOut()}
-                className="bg-white/15 text-text-primary px-4 py-2 rounded-full shadow-card hover:shadow-card-hover transition-card"
-              >
-                Sign Out
-              </button>
-            </div>
             {/* Sidebar section content */}
             {section === "ideas" && (
               <>
