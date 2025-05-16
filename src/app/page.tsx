@@ -140,7 +140,7 @@ export default function Home() {
             </div>
             <button
               onClick={() => signOut()}
-              className="bg-white/90 text-text-primary px-4 py-2 rounded-full shadow-card hover:shadow-card-hover transition-card"
+              className="bg-white/15 text-text-primary px-4 py-2 rounded-full shadow-card hover:shadow-card-hover transition-card"
             >
               Sign Out
             </button>
@@ -154,7 +154,7 @@ export default function Home() {
                 setEditingIdea(null); // Asegurarse de que estamos añadiendo, no editando
                 setShowModal(true);
               }}
-              className="bg-white/15 backdrop-blur-lg text-text-primary px-8 py-3 rounded-full shadow-card hover:shadow-card-hover hover:scale-102 transition-card focus:outline-none"
+              className="bg-white/40 backdrop-blur-lg text-text-primary px-8 py-3 rounded-full shadow-card hover:shadow-card-hover hover:scale-102 transition-card focus:outline-none"
             >
               Add New Idea
             </button>
