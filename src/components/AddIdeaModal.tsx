@@ -141,7 +141,7 @@ export default function AddIdeaModal({ idea, onClose, onSuccess, onDelete }: Add
     <div className="fixed inset-0 flex items-center justify-center p-screen-padding">
       <form
         onSubmit={handleSubmit}
-        className="bg-white/15 backdrop-blur-xl rounded-2xl shadow-card p-6 max-w-3xl w-full max-h-[90vh] transition-card flex flex-col"
+        className="bg-white/40 backdrop-blur-xl rounded-2xl shadow-card p-6 max-w-3xl w-full max-h-[90vh] transition-card flex flex-col"
       >
         {/* Encabezado fijo */}
         <div className="flex justify-between items-center mb-4 sticky top-0 z-10">
