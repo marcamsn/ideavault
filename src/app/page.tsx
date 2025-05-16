@@ -103,20 +103,22 @@ function HomeContent() {
       id: 'preview-1',
       text: 'Esta es una idea de ejemplo para la vista previa de Windsurf',
       tags: ['preview', 'ejemplo'],
-      mood: 'happy',
+      mood: 'happy' as const,
       favorite: true,
       image_url: null,
       created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
       user_id: user.id
     },
     {
       id: 'preview-2',
       text: 'Las ideas reales aparecerán cuando accedas desde un navegador normal',
       tags: ['preview', 'información'],
-      mood: 'dreamy',
+      mood: 'dreamy' as const,
       favorite: false,
       image_url: null,
       created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
       user_id: user.id
     }
   ] : []
