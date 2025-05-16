@@ -54,25 +54,20 @@ const Sidebar: React.FC<SidebarProps> = ({ selected, onSelect, onAddIdea }) => {
         <img
           src={expanded ? "/logos/Logo.svg" : "/logos/LogoIcon.svg"}
           alt="Logo"
-          className={expanded ? "h-8 w-auto mb-2" : "h-9 w-9 mb-2"}
-        />
-        <button
-          className="flex items-center justify-center text-gray-700 hover:text-primary focus:outline-none mb-2"
+          className={expanded ? "h-8 w-auto mb-2 cursor-pointer" : "h-9 w-9 mb-2 cursor-pointer"}
           onClick={() => setExpanded((prev) => !prev)}
           aria-label={expanded ? "Collapse sidebar" : "Expand sidebar"}
-        >
-          <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M8 6L16 12L8 18"/></svg>
-        </button>
+        />
       </div>
       {onAddIdea && (
         <div className="mt-2 mb-4 flex justify-center w-full">
           <button
-            className={`flex items-center gap-2 w-full px-3 py-2 rounded-2xl bg-gradient-to-r from-pastel-pink/70 to-pastel-blue/40 shadow-card text-primary font-semibold transition-all duration-200 hover:scale-105 hover:shadow-lg ${expanded ? '' : 'justify-center'}`}
+            className={`flex items-center gap-2 w-full px-3 py-2 rounded-2xl bg-gradient-to-r from-pastel-pink/70 to-pastel-blue/40 shadow-card text-pink-500 font-semibold transition-all duration-200 hover:scale-105 hover:shadow-lg ${expanded ? '' : 'justify-center'}`}
             style={{minHeight: 40}}
             onClick={onAddIdea}
           >
             <FiPlus size={20} />
-            {expanded && <span>Nueva idea</span>}
+            {expanded && <span>New idea</span>}
           </button>
         </div>
       )}
@@ -132,7 +127,7 @@ const Sidebar: React.FC<SidebarProps> = ({ selected, onSelect, onAddIdea }) => {
               onClick={() => setMobileOpen(false)}
               aria-label="Close sidebar menu"
             >
-              <img src="/logos/LogoIcon.svg" alt="Logo" className="h-6 w-6" />
+              <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 18L18 12L6 6"/></svg>
             </button>
             {/* Botón para añadir nueva idea */}
             <div className="mb-4 flex justify-center">
