@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { Idea } from '@/types';
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import IdeaCard from './IdeaCard';
+import AddIdeaModal from './AddIdeaModal';
 
 interface CalendarProps {
   ideas: Idea[];
@@ -70,6 +71,40 @@ const Calendar: React.FC<CalendarProps> = ({ ideas }) => {
 
   const [hoveredIdeaId, setHoveredIdeaId] = useState<string | null>(null);
   const [popoverPosition, setPopoverPosition] = useState<{x: number; y: number} | null>(null);
+  const hidePopoverTimeout = React.useRef<NodeJS.Timeout | null>(null);
+  const [editingIdea, setEditingIdea] = useState<Idea | null>(null);
+  const [showModal, setShowModal] = useState(false);
+
+  // Función para mantener el popover visible si el mouse está en chip o popover
+  const handlePopoverMouseEnter = () => {
+    if (hidePopoverTimeout.current) {
+      clearTimeout(hidePopoverTimeout.current);
+      hidePopoverTimeout.current = null;
+    }
+  };
+  const handlePopoverMouseLeave = () => {
+    hidePopoverTimeout.current = setTimeout(() => {
+      setHoveredIdeaId(null);
+      setPopoverPosition(null);
+    }, 100);
+  };
+
+  const handleChipMouseEnter = (e: React.MouseEvent, ideaId: string) => {
+    if (hidePopoverTimeout.current) {
+      clearTimeout(hidePopoverTimeout.current);
+      hidePopoverTimeout.current = null;
+    }
+    setHoveredIdeaId(ideaId);
+    const rect = (e.target as HTMLElement).getBoundingClientRect();
+    setPopoverPosition({x: rect.left + rect.width/2, y: rect.top});
+  };
+  const handleChipMouseLeave = () => {
+    hidePopoverTimeout.current = setTimeout(() => {
+      setHoveredIdeaId(null);
+      setPopoverPosition(null);
+    }, 100);
+  };
+
 
   return (
     <div className="w-full max-w-5xl mx-auto p-4 relative">
@@ -103,16 +138,10 @@ const Calendar: React.FC<CalendarProps> = ({ ideas }) => {
                 {ideasForDay.map((idea) => (
                   <div
                     key={idea.id}
-                    className="flex items-center gap-1 px-1 py-0.5 rounded-lg bg-white/70 shadow-sm border border-white/30 cursor-pointer relative"
-                    onMouseEnter={e => {
-                      setHoveredIdeaId(idea.id);
-                      const rect = (e.target as HTMLElement).getBoundingClientRect();
-                      setPopoverPosition({x: rect.left + rect.width/2, y: rect.top});
-                    }}
-                    onMouseLeave={() => {
-                      setHoveredIdeaId(null);
-                      setPopoverPosition(null);
-                    }}
+                    className="flex items-center gap-1 px-1 py-0.5 rounded-lg bg-gradient-to-r bg-white/70 shadow-sm border border-white/30 cursor-pointer relative"
+                    onMouseEnter={e => handleChipMouseEnter(e, idea.id)}
+                    onMouseLeave={handleChipMouseLeave}
+                    onClick={() => { setEditingIdea(idea); setShowModal(true); }}
                   >
                     {idea.image_url && (
                       <img src={idea.image_url} alt="" className="w-6 h-6 rounded object-cover" />
@@ -133,16 +162,30 @@ const Calendar: React.FC<CalendarProps> = ({ ideas }) => {
             left: popoverPosition ? popoverPosition.x : 0,
             top: popoverPosition ? popoverPosition.y - 10 : 0
           }}
-          onMouseEnter={() => setHoveredIdeaId(hoveredIdeaId)}
-          onMouseLeave={() => { setHoveredIdeaId(null); setPopoverPosition(null); }}
+          onMouseEnter={handlePopoverMouseEnter}
+          onMouseLeave={handlePopoverMouseLeave}
         >
-          <div className="shadow-xl rounded-xl bg-white/95 p-2 min-w-[250px] max-w-xs">
+          <div className="shadow-xl rounded-xl bg-white/95 p-2 min-w-[250px] max-w-xs" onClick={() => {
+            const idea = ideas.find(i => i.id === hoveredIdeaId);
+            if (idea) { setEditingIdea(idea); setShowModal(true); }
+          }}>
             <IdeaCard
               idea={ideas.find(i => i.id === hoveredIdeaId)!}
               onSwipe={undefined}
               onEdit={undefined}
             />
           </div>
+        </div>
+      )}
+      {/* Modal de edición */}
+      {showModal && editingIdea && (
+        <div className="fixed inset-0 z-50 bg-pastel-purple/30 backdrop-blur-md flex items-center justify-center p-screen-padding">
+          <AddIdeaModal
+            idea={editingIdea}
+            onClose={() => { setShowModal(false); setEditingIdea(null); }}
+            onSuccess={() => { setShowModal(false); setEditingIdea(null); }}
+            onDelete={() => { setShowModal(false); setEditingIdea(null); }}
+          />
         </div>
       )}
     </div>
