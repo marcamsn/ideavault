@@ -8,6 +8,7 @@ import IdeaCard from '@/components/IdeaCard'
 import AddIdeaModal from '@/components/AddIdeaModal'
 import Calendar from '@/components/Calendar'
 import IdeaList from '@/components/IdeaList'
+import Dashboard from '@/components/Dashboard'
 import { useAuth } from '@/contexts/AuthContext'
 import Sidebar from '@/components/Sidebar'
 import { SidebarMenuProvider, useSidebarMenu } from './SidebarMenuContext'
@@ -157,6 +158,9 @@ function HomeContent() {
             )}
             {section === "calendar" && (
               <Calendar ideas={ideas} />
+            )}
+            {section === "dashboard" && (
+              <Dashboard ideas={ideas} />
             )}
           </div>
         </main>

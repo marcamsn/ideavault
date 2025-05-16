@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 
-type Section = "ideas" | "calendar";
+type Section = "ideas" | "calendar" | "dashboard";
 
 interface SidebarMenuContextProps {
   section: Section;
