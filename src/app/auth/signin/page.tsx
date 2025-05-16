@@ -60,7 +60,9 @@ export default function SignIn() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pastel-pink via-pastel-blue to-pastel-purple p-screen-padding">
       <div className="bg-white/15 backdrop-blur-xl rounded-2xl shadow-card p-8 w-full max-w-md transition-card">
-        <h1 className="text-title font-heading text-text-primary mb-6 text-center">Sign in to IdeaVault</h1>
+        <div className="flex justify-center mb-4">
+          <img src="/logos/Logo.svg" alt="Logo principal" className="h-10 w-auto" />
+        </div>
         
         {error && (
           <div className="bg-red-400/20 backdrop-blur-md border border-red-400/30 text-red-700 px-4 py-3 rounded-xl mb-5">
