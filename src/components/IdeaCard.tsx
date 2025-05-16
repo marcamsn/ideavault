@@ -46,7 +46,8 @@ export default function IdeaCard({ idea, onSwipe, onEdit }: IdeaCardProps) {
 
   return (
     <div
-      className="relative bg-white/15 backdrop-blur-xl rounded-xl shadow-card p-3 cursor-pointer transition-card hover:scale-102 hover:shadow-card-hover flex flex-col h-full"
+      className="relative bg-white/20 bg-gradient-to-br from-pastel-pink/30 via-pastel-blue/20 to-pastel-purple/20 rounded-[2rem] shadow-[0_10px_30px_rgba(0,0,0,0.07)] p-5 cursor-pointer transition-transform duration-150 hover:scale-[1.03] hover:shadow-[0_16px_40px_rgba(0,0,0,0.10)] flex flex-col h-full border border-white/20 backdrop-blur-2xl"
+      style={{ boxShadow: '0 10px 30px rgba(0,0,0,0.07), 0 1px 0 0 rgba(255,255,255,0.3) inset' }}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -54,7 +55,7 @@ export default function IdeaCard({ idea, onSwipe, onEdit }: IdeaCardProps) {
     >
       <div className="flex-1 flex flex-col">
         {idea.image_url ? (
-          <div className="h-32 mb-3 overflow-hidden rounded-xl">
+          <div className="h-32 mb-3 overflow-hidden rounded-2xl bg-gradient-to-br from-pastel-pink/30 to-pastel-blue/20 flex items-center justify-center">
             <img
               src={idea.image_url}
               alt="Idea"
@@ -62,8 +63,8 @@ export default function IdeaCard({ idea, onSwipe, onEdit }: IdeaCardProps) {
             />
           </div>
         ) : (
-          <div className="flex items-center justify-center h-14 mb-2">
-            <span className="text-4xl opacity-70">{moodEmoji}</span>
+          <div className="flex items-center justify-center h-16 mb-3">
+            <span className="text-5xl text-gray-700 opacity-80 drop-shadow-sm">{moodEmoji}</span>
           </div>
         )}
         
@@ -74,11 +75,11 @@ export default function IdeaCard({ idea, onSwipe, onEdit }: IdeaCardProps) {
           </div>
           
           {idea.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1 justify-center">
+            <div className="flex flex-wrap gap-2 justify-center">
               {idea.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-2 py-0.5 text-xs bg-white/20 backdrop-blur-md text-text-secondary rounded-full"
+                  className="px-3 py-0.5 text-xs bg-white/30 text-gray-700 rounded-full shadow-inner border border-white/30 font-medium"
                 >
                   {tag}
                 </span>
@@ -88,12 +89,12 @@ export default function IdeaCard({ idea, onSwipe, onEdit }: IdeaCardProps) {
         </div>
       </div>
       
-      <div className="flex justify-between text-xs text-text-muted mt-2 pt-1 border-t border-white/10">
+      <div className="flex justify-between text-xs text-gray-500 mt-3 pt-2 border-t border-white/20">
         <span className="flex items-center">
           {idea.favorite ? (
-            <span className="text-yellow-500 mr-1">⭐</span>
+            <span className="text-yellow-400 mr-1">⭐</span>
           ) : (
-            <span className="text-pastel-gray-400 mr-1">☆</span>
+            <span className="text-gray-300 mr-1">☆</span>
           )}
           {idea.favorite ? 'Favorited' : 'Not favorited'}
         </span>
