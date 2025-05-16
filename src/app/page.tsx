@@ -6,6 +6,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Idea } from '@/types'
 import IdeaCard from '@/components/IdeaCard'
 import AddIdeaModal from '@/components/AddIdeaModal'
+import Calendar from '@/components/Calendar'
 import { useAuth } from '@/contexts/AuthContext'
 import Sidebar from '@/components/Sidebar'
 import { SidebarMenuProvider, useSidebarMenu } from './SidebarMenuContext'
@@ -119,8 +120,6 @@ function HomeContent() {
     }
   ] : []
 
-  
-
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-pastel-pink via-pastel-blue to-pastel-purple">
       {/* Sidebar */}
@@ -137,7 +136,7 @@ function HomeContent() {
                   <button
                     onClick={(e) => {
                       e.preventDefault();
-                      setEditingIdea(null); // Asegurarse de que estamos añadiendo, no editando
+                      setEditingIdea(null); // Asegúrate de que estamos añadiendo, no editando
                       setShowModal(true);
                     }}
                     className="bg-white/40 backdrop-blur-lg text-text-primary px-8 py-3 rounded-full shadow-card hover:shadow-card-hover hover:scale-102 transition-card focus:outline-none"
@@ -166,10 +165,7 @@ function HomeContent() {
               </>
             )}
             {section === "calendar" && (
-              <div className="flex flex-col items-center justify-center h-64 text-gray-400">
-                <span className="text-4xl mb-2">📅</span>
-                <p className="text-lg">Calendar coming soon...</p>
-              </div>
+              <Calendar ideas={ideas} />
             )}
           </div>
         </main>
