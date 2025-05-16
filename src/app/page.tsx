@@ -7,6 +7,7 @@ import { Idea } from '@/types'
 import IdeaCard from '@/components/IdeaCard'
 import AddIdeaModal from '@/components/AddIdeaModal'
 import Calendar from '@/components/Calendar'
+import IdeaList from '@/components/IdeaList'
 import { useAuth } from '@/contexts/AuthContext'
 import Sidebar from '@/components/Sidebar'
 import { SidebarMenuProvider, useSidebarMenu } from './SidebarMenuContext'
@@ -145,23 +146,11 @@ function HomeContent() {
                   </button>
                 </div>
                 {/* Contenedor de ideas */}
-                {displayIdeas.length === 0 ? (
-                  <div className="text-center py-10 bg-white/10 backdrop-blur-xl rounded-2xl shadow-card p-card-padding">
-                    <p className="text-text-secondary">No ideas yet. Add your first idea!</p>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 auto-rows-fr">
-                    {displayIdeas.map((idea) => (
-                      <div key={idea.id} className="h-full">
-                        <IdeaCard
-                          idea={idea}
-                          onSwipe={(direction) => handleSwipe(idea, direction)}
-                          onEdit={handleEditIdea}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <IdeaList
+                  ideas={displayIdeas}
+                  onSwipe={handleSwipe}
+                  onEdit={handleEditIdea}
+                />
               </>
             )}
             {section === "calendar" && (
