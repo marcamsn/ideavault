@@ -128,10 +128,12 @@ export default function Home() {
     <div className="relative">
       <main className="min-h-screen bg-gradient-to-br from-pastel-pink via-pastel-blue to-pastel-purple p-screen-padding">
         <div className="max-w-4xl mx-auto">
-          {/* Header con saludo personalizado */}
+          {/* Header con logo y saludo personalizado */}
           <div className="flex flex-col md:flex-row justify-between items-center mb-8">
             <div className="mb-4 md:mb-0">
-              <h1 className="text-title font-heading text-text-primary mb-1">IdeaVault</h1>
+              <div className="flex items-center mb-1">
+                <img src="/logos/Logo.svg" alt="Logo principal" className="h-8 w-auto mr-2" />
+              </div>
               <p className="text-text-secondary">
                 {getGreeting()}, {user?.email?.split('@')[0] || 'User'}
               </p>
