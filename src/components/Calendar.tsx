@@ -70,7 +70,7 @@ const Calendar: React.FC<CalendarProps> = ({ ideas }) => {
   ];
 
   const [hoveredIdeaId, setHoveredIdeaId] = useState<string | null>(null);
-  const [popoverPosition, setPopoverPosition] = useState<{x: number; y: number} | null>(null);
+  const [popoverPosition, setPopoverPosition] = useState<{x: number; y: number; placement: 'right' | 'left' | 'top' | 'bottom'} | null>(null);
   const hidePopoverTimeout = React.useRef<NodeJS.Timeout | null>(null);
   const [editingIdea, setEditingIdea] = useState<Idea | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -96,8 +96,47 @@ const Calendar: React.FC<CalendarProps> = ({ ideas }) => {
     }
     setHoveredIdeaId(ideaId);
     const rect = (e.target as HTMLElement).getBoundingClientRect();
-    setPopoverPosition({x: rect.left + rect.width/2, y: rect.top});
+    const popoverWidth = 300; // px aprox
+    const popoverHeight = 320; // px aprox
+    const margin = 12; // px
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    // Decide dirección
+    let placement: 'right' | 'left' | 'top' | 'bottom' = 'right';
+    if (rect.right + popoverWidth + margin < windowWidth) {
+      placement = 'right';
+    } else if (rect.left - popoverWidth - margin > 0) {
+      placement = 'left';
+    } else if (rect.bottom + popoverHeight + margin < windowHeight) {
+      placement = 'bottom';
+    } else {
+      placement = 'top';
+    }
+
+    let x = rect.left + rect.width/2;
+    let y = rect.top;
+    if (placement === 'right') {
+      x = rect.right + margin;
+      y = rect.top + rect.height/2 - popoverHeight/2;
+    } else if (placement === 'left') {
+      x = rect.left - popoverWidth - margin;
+      y = rect.top + rect.height/2 - popoverHeight/2;
+    } else if (placement === 'bottom') {
+      x = rect.left + rect.width/2 - popoverWidth/2;
+      y = rect.bottom + margin;
+    } else if (placement === 'top') {
+      x = rect.left + rect.width/2 - popoverWidth/2;
+      y = rect.top - popoverHeight - margin;
+    }
+    // Evita que se salga por arriba o abajo
+    y = Math.max(margin, Math.min(y, windowHeight - popoverHeight - margin));
+    // Evita que se salga por los lados
+    x = Math.max(margin, Math.min(x, windowWidth - popoverWidth - margin));
+
+    setPopoverPosition({x, y, placement});
   };
+
   const handleChipMouseLeave = () => {
     hidePopoverTimeout.current = setTimeout(() => {
       setHoveredIdeaId(null);
@@ -155,24 +194,27 @@ const Calendar: React.FC<CalendarProps> = ({ ideas }) => {
         })}
       </div>
       {/* Popover IdeaCard */}
-      {hoveredIdeaId && (
+      {hoveredIdeaId && popoverPosition && (
         <div
           className="fixed z-50"
           style={{
-            left: popoverPosition ? popoverPosition.x : 0,
-            top: popoverPosition ? popoverPosition.y - 10 : 0
+            left: popoverPosition.x,
+            top: popoverPosition.y,
+            width: 300,
+            maxWidth: 320,
+            transition: 'left 0.08s, top 0.08s',
           }}
           onMouseEnter={handlePopoverMouseEnter}
           onMouseLeave={handlePopoverMouseLeave}
         >
-          <div className="shadow-xl rounded-xl bg-white/95 p-2 min-w-[250px] max-w-xs" onClick={() => {
+          <div className="shadow-xl rounded-xl bg-white/95 min-w-[250px] max-w-xs" onClick={() => {
             const idea = ideas.find(i => i.id === hoveredIdeaId);
             if (idea) { setEditingIdea(idea); setShowModal(true); }
           }}>
             <IdeaCard
               idea={ideas.find(i => i.id === hoveredIdeaId)!}
-              onSwipe={undefined}
-              onEdit={undefined}
+              onSwipe={() => {}}
+              onEdit={idea => { setEditingIdea(idea); setShowModal(true); }}
             />
           </div>
         </div>
