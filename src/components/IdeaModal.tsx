@@ -12,10 +12,11 @@ interface AddIdeaModalProps {
   onDelete: (ideaId: string) => void
 }
 
-export default function AddIdeaModal({ idea, onClose, onSuccess, onDelete }: AddIdeaModalProps) {
+export default function IdeaModal({ idea, onClose, onSuccess, onDelete }: AddIdeaModalProps) {
   const [status, setStatus] = useState<IdeaStatus>(idea?.status || 'open');
   const [text, setText] = useState(idea?.text || '')
   const [tags, setTags] = useState<string[]>(idea?.tags || [])
+  const [tagInput, setTagInput] = useState('');
   const [mood, setMood] = useState<'happy' | 'playful' | 'dreamy' | 'wild'>(idea?.mood as 'happy' | 'playful' | 'dreamy' | 'wild' || 'happy')
   const [favorite, setFavorite] = useState(idea?.favorite || false)
   const [image, setImage] = useState<File | null>(null)
@@ -211,16 +212,50 @@ export default function AddIdeaModal({ idea, onClose, onSuccess, onDelete }: Add
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Columna izquierda */}
             <div className="space-y-4">
-              <div>
-                <label className="block text-text-secondary font-body mb-2">Tags (comma separated)</label>
-                <input
-                  type="text"
-                  value={tags.join(',')}
-                  onChange={(e) => setTags(e.target.value.split(',').map(tag => tag.trim()))}
-                  className="w-full p-3 bg-white/30 backdrop-blur-md border-0 rounded-xl text-text-secondary focus:ring-2 focus:ring-pastel-purple/50 focus:outline-none"
-                  placeholder="creativity, work, future"
-                />
-              </div>
+               <div>
+                 <label className="block text-text-secondary font-body mb-2">Tags</label>
+                 <div className="flex flex-wrap gap-2 p-2 bg-white/30 backdrop-blur-md rounded-xl min-h-[48px]">
+                   {tags.map((tag, idx) => (
+                     <span key={tag + idx} className="flex items-center bg-gradient-to-r text-text-secondary px-3 py-1 rounded-full text-xs font-medium">
+                       {tag}
+                       <button
+                         type="button"
+                         className="ml-2 text-text-secondary hover:text-text-primary focus:outline-none"
+                         onClick={() => setTags(tags.filter((_, i) => i !== idx))}
+                         aria-label={`Remove tag ${tag}`}
+                       >
+                         ×
+                       </button>
+                     </span>
+                   ))}
+                   <input
+                     type="text"
+                     value={tagInput || ''}
+                     onChange={e => setTagInput(e.target.value)}
+                     onKeyDown={e => {
+                       if ([',', 'Enter'].includes(e.key)) {
+                         e.preventDefault();
+                         const newTag = tagInput?.trim().replace(/,$/, '');
+                         if (newTag && !tags.includes(newTag)) {
+                           setTags([...tags, newTag]);
+                         }
+                         setTagInput('');
+                       } else if (e.key === 'Backspace' && !tagInput && tags.length > 0) {
+                         setTags(tags.slice(0, -1));
+                       }
+                     }}
+                     onBlur={() => {
+                       const newTag = tagInput?.trim();
+                       if (newTag && !tags.includes(newTag)) {
+                         setTags([...tags, newTag]);
+                       }
+                       setTagInput('');
+                     }}
+                     className="flex-1 min-w-[100px] p-1 bg-transparent border-0 focus:outline-none text-text-secondary"
+                     placeholder={tags.length === 0 ? 'Add a tag and press Enter' : ''}
+                   />
+                 </div>
+               </div>
 
               <div>
                 <label className="block text-text-secondary font-body mb-2">Mood</label>
