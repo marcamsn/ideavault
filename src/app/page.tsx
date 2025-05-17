@@ -39,16 +39,14 @@ function HomeContent() {
     const { data, error } = await supabase
       .from('ideas')
       .select('*')
-      .order('created_at', { ascending: false })
-      // Filtro por user_id para asegurar que solo se obtienen las ideas del usuario actual
-      .eq('user_id', user?.id)
+      .order('created_at', { ascending: false });
 
     if (error) {
-      console.error('Error fetching ideas:', error)
-      return
+      console.error('Error fetching ideas:', error);
+      return;
     }
 
-    setIdeas(data || [])
+    setIdeas(data || []);
   }
 
   async function handleSwipe(idea: Idea, direction: 'left' | 'right') {

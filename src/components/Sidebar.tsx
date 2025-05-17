@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from '@/contexts/AuthContext';
-import { FiCalendar, FiGrid, FiPlus } from "react-icons/fi";
+import { FiBarChart2, FiCalendar, FiGrid, FiPlus } from "react-icons/fi";
 
 type Section = "ideas" | "calendar" | "dashboard";
 
@@ -44,7 +44,7 @@ const Sidebar: React.FC<SidebarProps> = ({ selected, onSelect, onAddIdea }) => {
     },
     {
       key: "dashboard",
-      icon: <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm4 0h2v-4H7v4zm4 0h2v-7h-2v7zm4 0h2v-2h-2v2zm4 0h2v-9h-2v9z"/></svg>,
+      icon: <FiBarChart2 size={22} />,
       label: "Dashboard",
       onClick: () => onSelect("dashboard"),
       active: selected === "dashboard",

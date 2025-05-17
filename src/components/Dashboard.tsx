@@ -105,21 +105,65 @@ const Dashboard: React.FC<DashboardProps> = ({ ideas }) => {
   // Ideas over time
   const ideasByPeriod = useMemo(() => getIdeasByPeriod(ideas, period), [ideas, period]);
   const sortedPeriods = Object.keys(ideasByPeriod).sort();
+  // Gradiente pastel para barras
+  // Usamos un plugin para crear gradientes dinámicos
+  const pastelGradients = [
+    ['#a7c7f9', '#fbc2eb'], // azul-lila
+    ['#fbc2eb', '#fcdffb'], // rosa-lila
+    ['#fbc2eb', '#f9f7d9'], // rosa-amarillo
+    ['#f9f7d9', '#a7c7f9'], // amarillo-azul
+  ];
+  const barGradientPlugin = {
+    id: 'bar-gradient',
+    beforeDraw: (chart: any) => {
+      const ctx = chart.ctx;
+      const chartArea = chart.chartArea;
+      if (!chartArea) return;
+      chart.data.datasets.forEach((dataset: any, i: number) => {
+        if (dataset.type === 'bar' || chart.config.type === 'bar') {
+          dataset.backgroundColor = dataset.data.map((_: any, idx: number) => {
+            const grad = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+            const colors = pastelGradients[idx % pastelGradients.length];
+            grad.addColorStop(0, colors[0]);
+            grad.addColorStop(1, colors[1]);
+            return grad;
+          });
+        }
+      });
+    },
+    beforeDatasetsDraw: (chart: any) => {
+      const ctx = chart.ctx;
+      const chartArea = chart.chartArea;
+      if (!chartArea) return;
+      chart.data.datasets.forEach((dataset: any, i: number) => {
+        if (dataset.type === 'bar' || chart.config.type === 'bar') {
+          dataset.backgroundColor = dataset.data.map((_: any, idx: number) => {
+            const grad = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+            const colors = pastelGradients[idx % pastelGradients.length];
+            grad.addColorStop(0, colors[0]);
+            grad.addColorStop(1, colors[1]);
+            return grad;
+          });
+        }
+      });
+    }
+  };
+
+
   const timeData = {
     labels: sortedPeriods,
     datasets: [
       {
         label: 'Ideas creadas',
         data: sortedPeriods.map((key) => ideasByPeriod[key]),
-        fill: true,
-        borderColor: '#6366F1',
-        backgroundColor: 'rgba(99,102,241,0.08)',
-        tension: 0.3,
-        pointRadius: 4,
-        pointBackgroundColor: '#6366F1',
+        borderRadius: 18,
+        barPercentage: 0.7,
+        categoryPercentage: 0.7,
+        backgroundColor: undefined,
       },
     ],
   };
+
 
   // Tag bar
   const tagCounts = useMemo(() => getTagCounts(ideas), [ideas]);
@@ -164,7 +208,14 @@ const Dashboard: React.FC<DashboardProps> = ({ ideas }) => {
               ))}
             </div>
           </div>
-          <Bar data={timeData} options={{ plugins: { legend: { display: false } }, scales: { x: { grid: {display:false}}, y: { grid: {color:'#f2f2f2'}} } }} />
+          <Bar
+            data={timeData}
+            options={{
+              plugins: { legend: { display: false } },
+              scales: { x: { grid: {display:false}}, y: { grid: {color:'#f2f2f2'}} },
+            }}
+            plugins={[barGradientPlugin]}
+          />
         </div>
         {/* Tag bar chart */}
         <div className="rounded-3xl bg-white/20 backdrop-blur-2xl shadow-card p-6 col-span-1 md:col-span-2 flex flex-col items-center border border-white/30" style={{boxShadow:'0px 10px 30px rgba(0,0,0,0.05)'}}>
