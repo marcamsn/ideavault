@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from '@/contexts/AuthContext';
-import { FiBarChart2, FiCalendar, FiGrid, FiPlus } from "react-icons/fi";
+import { FiBarChart2, FiCalendar, FiGrid, FiPlus, FiChevronLeft } from "react-icons/fi";
 
 type Section = "ideas" | "calendar" | "dashboard";
 
@@ -85,7 +85,7 @@ const Sidebar: React.FC<SidebarProps> = ({ selected, onSelect, onAddIdea }) => {
           <li key={item.key} className="mb-2">
             <button
               className={`flex items-center gap-4 px-3 py-2 rounded-2xl w-full transition-all duration-200 text-base font-medium
-                ${item.active ? "bg-gradient-to-r from-pastel-pink/60 to-pastel-blue/40 shadow-md text-primary border border-white/40 backdrop-blur-md" : "text-gray-700 hover:bg-white/40 hover:shadow-sm"}
+                ${item.active ? "bg-blue-100 bg-gradient-to-r from-pastel-pink/60 to-pastel-blue/40 shadow-md text-primary border border-white/40 backdrop-blur-md" : "text-gray-700 hover:bg-white/40 hover:shadow-sm"}
               `}
               style={item.active ? {boxShadow:'0 2px 8px 0 rgba(180,180,255,0.10), 0 1px 0 0 rgba(255,255,255,0.2) inset'} : {}}
               onClick={item.onClick}
@@ -118,7 +118,7 @@ const Sidebar: React.FC<SidebarProps> = ({ selected, onSelect, onAddIdea }) => {
       {/* Mobile menu button */}
       <div className="md:hidden fixed top-4 left-4 z-50">
         <button
-          className="bg-white/90 rounded-full p-2 shadow-card"
+          className="bg-white/90 rounded-lg p-2 shadow-card"
           onClick={() => setMobileOpen(true)}
           aria-label="Open sidebar menu"
         >
@@ -136,7 +136,7 @@ const Sidebar: React.FC<SidebarProps> = ({ selected, onSelect, onAddIdea }) => {
               onClick={() => setMobileOpen(false)}
               aria-label="Close sidebar menu"
             >
-              <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M6 18L18 12L6 6"/></svg>
+              <FiChevronLeft size={22} />
             </button>
             {/* Botón para añadir nueva idea */}
             <div className="mb-4 flex justify-center">

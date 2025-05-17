@@ -4,8 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Idea } from '@/types'
-import IdeaCard from '@/components/IdeaCard'
-import AddIdeaModal from '@/components/AddIdeaModal'
+import IdeaModal from '@/components/IdeaModal'
 import Calendar from '@/components/Calendar'
 import IdeaList from '@/components/IdeaList'
 import Dashboard from '@/components/Dashboard'
@@ -107,7 +106,8 @@ function HomeContent() {
       image_url: null,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
-      user_id: user.id
+      user_id: user.id,
+      status: 'open' as const,
     },
     {
       id: 'preview-2',
@@ -118,12 +118,13 @@ function HomeContent() {
       image_url: null,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
-      user_id: user.id
+      user_id: user.id,
+      status: 'open' as const,
     }
   ] : []
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-pastel-pink via-pastel-blue to-pastel-purple">
+    <div className="flex flex-col min-h-screen h-auto bg-gradient-to-br from-pastel-pink via-pastel-blue to-pastel-purple overflow-x-hidden">
       {/* Sidebar */}
       <Sidebar selected={section} onSelect={setSection} onAddIdea={() => setShowModal(true)} />
       {/* Main content wrapper, shifts right on desktop/tablet */}
@@ -133,24 +134,14 @@ function HomeContent() {
             {/* Sidebar section content */}
             {section === "ideas" && (
               <>
-                {/* Botón de añadir idea con estilo pill */}
-                <div className="flex justify-center mb-8">
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setEditingIdea(null); // Asegúrate de que estamos añadiendo, no editando
-                      setShowModal(true);
-                    }}
-                    className="bg-white/40 backdrop-blur-lg text-text-primary px-8 py-3 rounded-full shadow-card hover:shadow-card-hover hover:scale-102 transition-card focus:outline-none"
-                  >
-                    Add New Idea
-                  </button>
-                </div>
-                {/* Contenedor de ideas */}
                 <IdeaList
                   ideas={displayIdeas}
                   onSwipe={handleSwipe}
                   onEdit={handleEditIdea}
+                  onAddIdea={() => {
+                    setEditingIdea(null);
+                    setShowModal(true);
+                  }}
                 />
               </>
             )}
@@ -165,7 +156,7 @@ function HomeContent() {
         {/* Modal con estilo frosted glass */}
         {showModal && (
           <div className="fixed inset-0 z-50 bg-pastel-purple/30 backdrop-blur-md flex items-center justify-center p-screen-padding">
-            <AddIdeaModal
+            <IdeaModal
               idea={editingIdea}
               onClose={() => {
                 setShowModal(false);

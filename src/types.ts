@@ -1,3 +1,5 @@
+export type IdeaStatus = 'open' | 'completed' | 'discarded';
+
 export interface Idea {
   id: string
   text: string
@@ -8,6 +10,7 @@ export interface Idea {
   group_id?: string | null
   created_at: string
   updated_at: string
+  status: IdeaStatus // 'open' by default
 }
 
 // Represents a group (team, workspace, etc.)

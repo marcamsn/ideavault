@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { Idea } from '@/types';
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import IdeaCard from './IdeaCard';
-import AddIdeaModal from './AddIdeaModal';
+import IdeaModal from './IdeaModal';
 
 interface CalendarProps {
   ideas: Idea[];
@@ -222,7 +222,7 @@ const Calendar: React.FC<CalendarProps> = ({ ideas }) => {
       {/* Modal de edición */}
       {showModal && editingIdea && (
         <div className="fixed inset-0 z-50 bg-pastel-purple/30 backdrop-blur-md flex items-center justify-center p-screen-padding">
-          <AddIdeaModal
+          <IdeaModal
             idea={editingIdea}
             onClose={() => { setShowModal(false); setEditingIdea(null); }}
             onSuccess={() => { setShowModal(false); setEditingIdea(null); }}
