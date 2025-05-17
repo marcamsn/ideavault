@@ -4,8 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Idea } from '@/types'
-import IdeaCard from '@/components/IdeaCard'
-import AddIdeaModal from '@/components/AddIdeaModal'
+import IdeaModal from '@/components/IdeaModal'
 import Calendar from '@/components/Calendar'
 import IdeaList from '@/components/IdeaList'
 import Dashboard from '@/components/Dashboard'
@@ -107,7 +106,8 @@ function HomeContent() {
       image_url: null,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
-      user_id: user.id
+      user_id: user.id,
+      status: 'open' as const,
     },
     {
       id: 'preview-2',
@@ -118,7 +118,8 @@ function HomeContent() {
       image_url: null,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
-      user_id: user.id
+      user_id: user.id,
+      status: 'open' as const,
     }
   ] : []
 
@@ -165,7 +166,7 @@ function HomeContent() {
         {/* Modal con estilo frosted glass */}
         {showModal && (
           <div className="fixed inset-0 z-50 bg-pastel-purple/30 backdrop-blur-md flex items-center justify-center p-screen-padding">
-            <AddIdeaModal
+            <IdeaModal
               idea={editingIdea}
               onClose={() => {
                 setShowModal(false);

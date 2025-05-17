@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { Idea } from '@/types';
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import IdeaCard from './IdeaCard';
-import AddIdeaModal from './AddIdeaModal';
+import AddIdeaModal from './IdeaModal';
 
 interface CalendarProps {
   ideas: Idea[];

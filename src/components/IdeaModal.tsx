@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Idea } from '@/types'
+import { Idea, IdeaStatus } from '@/types'
 import { useAuth } from '@/contexts/AuthContext'
 
 interface AddIdeaModalProps {
@@ -13,6 +13,7 @@ interface AddIdeaModalProps {
 }
 
 export default function AddIdeaModal({ idea, onClose, onSuccess, onDelete }: AddIdeaModalProps) {
+  const [status, setStatus] = useState<IdeaStatus>(idea?.status || 'open');
   const [text, setText] = useState(idea?.text || '')
   const [tags, setTags] = useState<string[]>(idea?.tags || [])
   const [mood, setMood] = useState<'happy' | 'playful' | 'dreamy' | 'wild'>(idea?.mood as 'happy' | 'playful' | 'dreamy' | 'wild' || 'happy')
@@ -115,7 +116,8 @@ export default function AddIdeaModal({ idea, onClose, onSuccess, onDelete }: Add
         mood,
         favorite,
         image_url: imageUrl,
-        user_id: user.id
+        user_id: user.id,
+        status,
       };
       if (groupId) {
         ideaData.group_id = groupId;
@@ -256,6 +258,17 @@ export default function AddIdeaModal({ idea, onClose, onSuccess, onDelete }: Add
 
             {/* Columna derecha */}
             <div>
+              <label className="block text-text-secondary font-body mb-2">Status</label>
+              <select
+                className="w-full p-3 mb-4 bg-white/30 backdrop-blur-md border-0 rounded-xl text-text-secondary focus:ring-2 focus:ring-pastel-purple/50 focus:outline-none"
+                value={status}
+                onChange={e => setStatus(e.target.value as IdeaStatus)}
+              >
+                <option value="open">Open</option>
+                <option value="completed">Completed</option>
+                <option value="discarded">Discarded</option>
+              </select>
+
               <label className="block text-text-secondary font-body mb-2">Image</label>
               <div className="relative">
                 <input
