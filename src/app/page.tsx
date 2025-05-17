@@ -124,7 +124,7 @@ function HomeContent() {
   ] : []
 
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-pastel-pink via-pastel-blue to-pastel-purple">
+    <div className="flex flex-col min-h-screen h-auto bg-gradient-to-br from-pastel-pink via-pastel-blue to-pastel-purple overflow-x-hidden">
       {/* Sidebar */}
       <Sidebar selected={section} onSelect={setSection} onAddIdea={() => setShowModal(true)} />
       {/* Main content wrapper, shifts right on desktop/tablet */}
