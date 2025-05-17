@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Idea } from '@/types';
 import { Bar, Line, Doughnut } from 'react-chartjs-2';
+import StatusDonutChart from './StatusDonutChart';
 import {
   Chart as ChartJSCore,
   CategoryScale,
@@ -252,8 +253,12 @@ const Dashboard: React.FC<DashboardProps> = ({ ideas }) => {
           </div>
 
         </div>
+        {/* Status Donut Chart */}
+        <div className="rounded-3xl bg-white/20 backdrop-blur-2xl shadow-card p-6 flex flex-col items-center border border-white/30" style={{boxShadow:'0px 10px 30px rgba(0,0,0,0.05)'}}>
+          <StatusDonutChart ideas={ideas} />
+        </div>
         {/* Tag bar chart */}
-        <div className="rounded-3xl bg-white/20 backdrop-blur-2xl shadow-card p-6 col-span-1 md:col-span-2 flex flex-col items-center border border-white/30" style={{boxShadow:'0px 10px 30px rgba(0,0,0,0.05)'}}>
+        <div className="rounded-3xl bg-white/20 backdrop-blur-2xl shadow-card p-6 flex flex-col items-center border border-white/30" style={{boxShadow:'0px 10px 30px rgba(0,0,0,0.05)'}}>
           <h2 className="text-lg font-semibold mb-3 text-center" style={{fontWeight:500, color:'#333'}}>Most Used Tags</h2>
           <Doughnut
             data={{
