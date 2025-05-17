@@ -134,24 +134,14 @@ function HomeContent() {
             {/* Sidebar section content */}
             {section === "ideas" && (
               <>
-                {/* Botón de añadir idea con estilo pill */}
-                <div className="flex justify-center mb-8">
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setEditingIdea(null); // Asegúrate de que estamos añadiendo, no editando
-                      setShowModal(true);
-                    }}
-                    className="bg-white/40 backdrop-blur-lg text-text-primary px-8 py-3 rounded-full shadow-card hover:shadow-card-hover hover:scale-102 transition-card focus:outline-none"
-                  >
-                    Add New Idea
-                  </button>
-                </div>
-                {/* Contenedor de ideas */}
                 <IdeaList
                   ideas={displayIdeas}
                   onSwipe={handleSwipe}
                   onEdit={handleEditIdea}
+                  onAddIdea={() => {
+                    setEditingIdea(null);
+                    setShowModal(true);
+                  }}
                 />
               </>
             )}
