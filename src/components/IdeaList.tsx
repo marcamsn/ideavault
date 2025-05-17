@@ -35,7 +35,7 @@ const IdeaList: React.FC<IdeaListProps> = ({ ideas, onSwipe, onEdit, onAddIdea }
       {onAddIdea && (
           <button
             onClick={onAddIdea}
-            className="flex items-center gap-2 ml-4 bg-gradient-to-r from-pastel-pink/60 to-pastel-blue/40 text-gray-700 border border-gray-200 px-6 py-2 rounded-full shadow-card hover:shadow-card-hover hover:scale-102 transition-card focus:outline-none font-semibold"
+            className="flex items-center gap-2 ml-4 bg-white/95 text-gray-700 border border-gray-200 px-6 py-2 rounded-full shadow-card hover:shadow-card-hover hover:scale-102 transition-card focus:outline-none font-semibold"
             style={{ minHeight: '40px' }}
           >
             <FiPlus className="text-lg" />
