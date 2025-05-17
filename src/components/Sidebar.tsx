@@ -85,7 +85,7 @@ const Sidebar: React.FC<SidebarProps> = ({ selected, onSelect, onAddIdea }) => {
           <li key={item.key} className="mb-2">
             <button
               className={`flex items-center gap-4 px-3 py-2 rounded-2xl w-full transition-all duration-200 text-base font-medium
-                ${item.active ? "bg-gradient-to-r from-pastel-pink/60 to-pastel-blue/40 shadow-md text-primary border border-white/40 backdrop-blur-md" : "text-gray-700 hover:bg-white/40 hover:shadow-sm"}
+                ${item.active ? "bg-blue-100 bg-gradient-to-r from-pastel-pink/60 to-pastel-blue/40 shadow-md text-primary border border-white/40 backdrop-blur-md" : "text-gray-700 hover:bg-white/40 hover:shadow-sm"}
               `}
               style={item.active ? {boxShadow:'0 2px 8px 0 rgba(180,180,255,0.10), 0 1px 0 0 rgba(255,255,255,0.2) inset'} : {}}
               onClick={item.onClick}

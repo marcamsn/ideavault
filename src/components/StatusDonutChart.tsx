@@ -7,7 +7,7 @@ interface StatusDonutChartProps {
 }
 
 const statusLabels = ['Open', 'Completed', 'Discarded'];
-const statusColors = ['#a7c7f9', '#bbf7d0', '#fbc2eb'];
+const statusColors = ['#a7c7f9', '#bbf7d0', '#fbc2eb']; // Azul para open, verde para completed, rosa para discarded
 
 function getStatusCounts(ideas: Idea[]) {
   const counts = { open: 0, completed: 0, discarded: 0 };

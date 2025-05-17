@@ -12,8 +12,8 @@ interface IdeaListProps {
 
 const statusOptions = [
   { key: 'all', label: 'All', color: 'bg-white/70 text-gray-700 border-gray-200' },
-  { key: 'open', label: 'Open', color: 'bg-green-100 text-green-700 border-green-200' },
-  { key: 'completed', label: 'Completed', color: 'bg-blue-100 text-blue-700 border-blue-200' },
+  { key: 'open', label: 'Open', color: 'bg-blue-100 text-blue-700 border-blue-200' },
+  { key: 'completed', label: 'Completed', color: 'bg-green-100 text-green-700 border-green-200' },
   { key: 'discarded', label: 'Discarded', color: 'bg-red-100 text-red-700 border-red-200' },
 ] as const;
 

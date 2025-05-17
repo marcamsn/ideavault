@@ -100,7 +100,7 @@ export default function IdeaCard({ idea, onSwipe, onEdit }: IdeaCardProps) {
         </span>
         <span>
           <span className={`px-3 py-0.5 text-xs rounded-full font-semibold shadow-inner border border-white/30 
-            ${idea.status === 'open' ? 'bg-green-100 text-green-700' : idea.status === 'completed' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'}`}
+            ${idea.status === 'open' ? 'bg-blue-100 text-blue-700' : idea.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
           >
             {idea.status.charAt(0).toUpperCase() + idea.status.slice(1)}
           </span>
