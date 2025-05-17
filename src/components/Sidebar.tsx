@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from '@/contexts/AuthContext';
-import { FiCalendar, FiGrid, FiPlus } from "react-icons/fi";
+import { FiBarChart2, FiCalendar, FiGrid, FiPlus } from "react-icons/fi";
+
+type Section = "ideas" | "calendar" | "dashboard";
 
 interface SidebarProps {
-  selected: "ideas" | "calendar";
-  onSelect: (section: "ideas" | "calendar") => void;
+  selected: Section;
+  onSelect: (section: Section) => void;
   onAddIdea?: () => void;
 }
 
@@ -39,6 +41,13 @@ const Sidebar: React.FC<SidebarProps> = ({ selected, onSelect, onAddIdea }) => {
       label: "Calendar",
       onClick: () => onSelect("calendar"),
       active: selected === "calendar",
+    },
+    {
+      key: "dashboard",
+      icon: <FiBarChart2 size={22} />,
+      label: "Dashboard",
+      onClick: () => onSelect("dashboard"),
+      active: selected === "dashboard",
     },
   ];
 

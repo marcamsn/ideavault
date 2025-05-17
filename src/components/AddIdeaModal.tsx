@@ -24,6 +24,29 @@ export default function AddIdeaModal({ idea, onClose, onSuccess, onDelete }: Add
   const { user } = useAuth()
   const supabase = createClientComponentClient()
 
+  // Store the user's group_id if they are in a group
+  const [groupId, setGroupId] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchGroupId() {
+      if (!user) {
+        setGroupId(null);
+        return;
+      }
+      const { data, error } = await supabase
+        .from('group_users')
+        .select('group_id')
+        .eq('user_id', user.id)
+        .maybeSingle();
+      if (error) {
+        setGroupId(null);
+        return;
+      }
+      setGroupId(data?.group_id ?? null);
+    }
+    fetchGroupId();
+  }, [user, supabase]);
+
   type MoodType = 'happy' | 'playful' | 'dreamy' | 'wild';
   const MOODS: MoodType[] = ['happy', 'playful', 'dreamy', 'wild'];
 
@@ -86,7 +109,7 @@ export default function AddIdeaModal({ idea, onClose, onSuccess, onDelete }: Add
         imageUrl = urlData.publicUrl
       }
 
-      const ideaData = {
+      const ideaData: any = {
         text,
         tags,
         mood,
@@ -94,6 +117,9 @@ export default function AddIdeaModal({ idea, onClose, onSuccess, onDelete }: Add
         image_url: imageUrl,
         user_id: user.id
       };
+      if (groupId) {
+        ideaData.group_id = groupId;
+      }
 
       let error;
 

@@ -8,6 +8,7 @@ import IdeaCard from '@/components/IdeaCard'
 import AddIdeaModal from '@/components/AddIdeaModal'
 import Calendar from '@/components/Calendar'
 import IdeaList from '@/components/IdeaList'
+import Dashboard from '@/components/Dashboard'
 import { useAuth } from '@/contexts/AuthContext'
 import Sidebar from '@/components/Sidebar'
 import { SidebarMenuProvider, useSidebarMenu } from './SidebarMenuContext'
@@ -38,16 +39,14 @@ function HomeContent() {
     const { data, error } = await supabase
       .from('ideas')
       .select('*')
-      .order('created_at', { ascending: false })
-      // Filtro por user_id para asegurar que solo se obtienen las ideas del usuario actual
-      .eq('user_id', user?.id)
+      .order('created_at', { ascending: false });
 
     if (error) {
-      console.error('Error fetching ideas:', error)
-      return
+      console.error('Error fetching ideas:', error);
+      return;
     }
 
-    setIdeas(data || [])
+    setIdeas(data || []);
   }
 
   async function handleSwipe(idea: Idea, direction: 'left' | 'right') {
@@ -157,6 +156,9 @@ function HomeContent() {
             )}
             {section === "calendar" && (
               <Calendar ideas={ideas} />
+            )}
+            {section === "dashboard" && (
+              <Dashboard ideas={ideas} />
             )}
           </div>
         </main>
