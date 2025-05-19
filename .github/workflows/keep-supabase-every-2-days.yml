@@ -2,7 +2,8 @@ name: Keep Supabase Alive (cada 2 días)
 
 on:
   schedule:
-    - cron: '0 2 */2 * *'    
+    - cron: '0 2 */2 * *'      
+  workflow_dispatch:           
 
 jobs:
   ping-supabase:
