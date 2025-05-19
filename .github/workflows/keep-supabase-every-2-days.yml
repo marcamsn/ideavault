@@ -1,0 +1,18 @@
+name: Keep Supabase Alive (cada 2 días)
+
+on:
+  schedule:
+    - cron: '0 2 */2 * *'    
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_API_KEY }}
+    steps:
+      - name: Ping Supabase healthcheck
+        run: |
+          curl -X GET \
+            -H "apikey: $SUPABASE_KEY" \
+            "$SUPABASE_URL/rest/v1/rpc/healthcheck"
