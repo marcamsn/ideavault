@@ -1,6 +1,9 @@
 # IdeaVault
 
-A modern web application for managing and organizing your creative ideas.
+A modern web application for managing and organizing your creative ideas. [Demo](https://ideavault-seven.vercel.app/).
+
+![IdeaVault](https://github.com/user-attachments/assets/5faea1fd-1d52-48e0-bdb6-75fb4257b90e)
+
 
 ## Features
 
@@ -9,6 +12,8 @@ A modern web application for managing and organizing your creative ideas.
 - Mood-based categorization
 - Image storage integration
 - Filter and search capabilities
+- Calendar view
+- Integrated dashboard
 - Responsive design
 
 ## Tech Stack
@@ -40,7 +45,6 @@ A modern web application for managing and organizing your creative ideas.
 - `/src/app` - Next.js app directory with pages and API routes
 - `/src/components` - Reusable React components
 - `/src/lib` - Utility functions and configurations
-- `/src/types` - TypeScript type definitions
 - `/supabase.sql` - Database schema
 
 ## Contributing
@@ -54,3 +58,7 @@ A modern web application for managing and organizing your creative ideas.
 ## License
 
 MIT
+
+---
+
+Developed by @marcamsn
